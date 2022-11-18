@@ -1,44 +1,53 @@
-# A Neovim Plugin Template
+# Virtuality.nvim
 
-![GitHub Workflow Status](https://img.shields.io/github/workflow/status/ellisonleao/nvim-plugin-template/default?style=for-the-badge)
-![Lua](https://img.shields.io/badge/Made%20with%20Lua-blueviolet.svg?style=for-the-badge&logo=lua)
+A Lua plugin facilitating the LSP [`textDocument/inlayHint`](https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification/#initialize) command to provide virtual text type annotations.
 
-A template repository for Neovim plugins.
+## Example
 
-## Using it
+![Demo image](./demo.jpg)
 
-Via `gh`:
+## Supported LSPs
 
+* rust-analyzer (confirmed)
+* any other LSP supporting [`textDocument/inlayHint`](https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification/#initialize) (unconfirmed)
+
+## Installation
+
+Using [`packer.nvim`](https://github.com/wbthomason/packer.nvim)
+
+```lua
+use { "27justin/virtuality.nvim" }
 ```
-$ gh repo create my-plugin -p ellisonleao/nvim-plugin-template
+
+After installation, every buffer that supports the feature should display type annotations. No need to `setup()` anything.
+
+
+## Colors
+
+The type annotations are highlighted using `VirtualityInlayHint`, which in itself is linked to `Comment` by default.
+
+## Debugging
+
+Virtuality exports two functions.
+
+* `update(bufnr: integer|nil)` -> updates the annotations for either buffer `bufnr` or the current buffer if nil.
+* `check()` -> checks whether any of the LSPs connected to the current buffer support `textDocument/inlayHint`.
+	This function is asynchronous, the results are sent using `vim.notify`.
+
+```lua
+require"virtuality".update()
+require"virtuality".check()
 ```
-
-Via github web page:
-
-Click on `Use this template`
-
-![](https://docs.github.com/assets/cb-36544/images/help/repository/use-this-template-button.png)
-
-## Features and structure
-
-- 100% Lua
-- Github actions to run tests and check for formatting errors (Stylua)
-- Tests created with [busted](https://olivinelabs.com/busted/) + [plenary.nvim](https://github.com/nvim-lua/plenary.nvim)
 
 ### Plugin structure
 
 ```
 .
 ├── lua
-│   ├── plugin_name
+│   ├── virtuality
 │   │   └── module.lua
-│   └── plugin_name.lua
-├── Makefile
+│   └── virtuality.lua
 ├── plugin
-│   └── plugin_name.lua
-├── README.md
-├── tests
-│   ├── minimal_init.lua
-│   └── plugin_name
-│       └── plugin_name_spec.lua
+│   └── virtuality.lua
+└── README.md
 ```
