@@ -38,7 +38,7 @@ local function retrieve_inlay_hints(bufnr, lsp)
 					local tooltip
 
 					if type(hint.label) == "table" then
-						tooltip = ":" .. hint.label[2].value
+						tooltip = ": " .. hint.label[2].value
 					else
 						tooltip = hint.label
 					end
