@@ -35,7 +35,13 @@ local function retrieve_inlay_hints(bufnr, lsp)
 				-- without this check, we'd also get parameter names annotated at EOL, which is not very readable.
 				if hint.kind == 1 and lines_annotated[hint.position.line] ~= true then
 					local position = hint.position
-					local tooltip = hint.tooltip
+					local tooltip
+
+					if type(hint.label) == "table" then
+						tooltip = hint.label[2].value
+					else
+						tooltip = hint.label
+					end
 
 					vim.api.nvim_buf_set_extmark(bufnr, M.namespace, position.line, position.character, {
 						hl_group = "VirtualityInlayHint",
