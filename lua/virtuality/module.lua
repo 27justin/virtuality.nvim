@@ -35,10 +35,12 @@ local function retrieve_inlay_hints(bufnr, lsp)
 				-- without this check, we'd also get parameter names annotated at EOL, which is not very readable.
 				if hint.kind == 1 and lines_annotated[hint.position.line] ~= true then
 					local position = hint.position
-					local tooltip
+					local tooltip = ""
 
 					if type(hint.label) == "table" then
-						tooltip = ": " .. hint.label[2].value
+						for _, i in pairs(hint.label) do
+							tooltip = tooltip .. i.value .. " "
+						end
 					else
 						tooltip = hint.label
 					end
